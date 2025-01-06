@@ -5,6 +5,7 @@
 package com.theyarnest.views;
 
 import com.theyarnest.controllers.ValidationUtil;
+import com.theyarnest.controllers.algorithim.BinarySearch;
 import com.theyarnest.controllers.algorithim.InsertionSort;
 import com.theyarnest.controllers.algorithim.MergeSort;
 import com.theyarnest.controllers.algorithim.SelectionSort;
@@ -30,6 +31,7 @@ public class TheYarnestFrame extends javax.swing.JFrame {
     private final SelectionSort selectionSort;
     private final InsertionSort insertionSort;
     private final MergeSort mergeSort;
+    private final BinarySearch search;
     
     /**
      * Creates new form theYarnestframe
@@ -41,6 +43,7 @@ public class TheYarnestFrame extends javax.swing.JFrame {
         selectionSort = new SelectionSort();
         insertionSort = new InsertionSort();
         mergeSort = new MergeSort();
+        search = new BinarySearch();
         
         layoutInitialize();
         forProgressBar();
@@ -82,13 +85,15 @@ public class TheYarnestFrame extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tblProducts = new javax.swing.JTable();
         lblOurProducts = new javax.swing.JLabel();
-        btnSortId = new javax.swing.JButton();
-        btnSortCategory = new javax.swing.JButton();
+        btnSortStock = new javax.swing.JButton();
+        btnSortName = new javax.swing.JButton();
         btnSortMostPrice = new javax.swing.JButton();
-        btnSortCategoryDesc = new javax.swing.JButton();
+        btnSortNameDesc = new javax.swing.JButton();
         btnSortLeastPrice = new javax.swing.JButton();
-        jTextField1 = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        txtSearch = new javax.swing.JTextField();
+        btnSearch = new javax.swing.JButton();
+        btnSortStockDesc = new javax.swing.JButton();
+        lblSearchError = new javax.swing.JLabel();
         pnlAddProducts = new javax.swing.JPanel();
         pnlRegistrationForm = new javax.swing.JPanel();
         lblProductRegister = new javax.swing.JLabel();
@@ -341,7 +346,7 @@ public class TheYarnestFrame extends javax.swing.JFrame {
                     .addGroup(pnlAdminControlsLayout.createSequentialGroup()
                         .addGap(101, 101, 101)
                         .addComponent(pnlForBrand, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(29, Short.MAX_VALUE))
+                .addContainerGap(42, Short.MAX_VALUE))
         );
         pnlAdminControlsLayout.setVerticalGroup(
             pnlAdminControlsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -366,7 +371,10 @@ public class TheYarnestFrame extends javax.swing.JFrame {
                 "ID", "Product Name", "Category", "Yarn Type", "Repairable", "Description", "Price", "Stock", "Date Added"
             }
         ));
+        tblProducts.setEnabled(false);
+        tblProducts.setGridColor(new java.awt.Color(248, 247, 244));
         tblProducts.setRowSelectionAllowed(false);
+        tblProducts.setSelectionBackground(new java.awt.Color(248, 247, 244));
         tblProducts.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(tblProducts);
 
@@ -374,23 +382,23 @@ public class TheYarnestFrame extends javax.swing.JFrame {
         lblOurProducts.setForeground(new java.awt.Color(248, 247, 244));
         lblOurProducts.setText("Our Products");
 
-        btnSortId.setBackground(new java.awt.Color(133, 169, 143));
-        btnSortId.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        btnSortId.setForeground(new java.awt.Color(248, 247, 244));
-        btnSortId.setText("Sort by Id");
-        btnSortId.addActionListener(new java.awt.event.ActionListener() {
+        btnSortStock.setBackground(new java.awt.Color(133, 169, 143));
+        btnSortStock.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnSortStock.setForeground(new java.awt.Color(248, 247, 244));
+        btnSortStock.setText("Sort Stock");
+        btnSortStock.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSortIdActionPerformed(evt);
+                btnSortStockActionPerformed(evt);
             }
         });
 
-        btnSortCategory.setBackground(new java.awt.Color(133, 169, 143));
-        btnSortCategory.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        btnSortCategory.setForeground(new java.awt.Color(248, 247, 244));
-        btnSortCategory.setText("Sort  by Category");
-        btnSortCategory.addActionListener(new java.awt.event.ActionListener() {
+        btnSortName.setBackground(new java.awt.Color(133, 169, 143));
+        btnSortName.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnSortName.setForeground(new java.awt.Color(248, 247, 244));
+        btnSortName.setLabel("Sort  by Name");
+        btnSortName.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSortCategoryActionPerformed(evt);
+                btnSortNameActionPerformed(evt);
             }
         });
 
@@ -404,13 +412,13 @@ public class TheYarnestFrame extends javax.swing.JFrame {
             }
         });
 
-        btnSortCategoryDesc.setBackground(new java.awt.Color(133, 169, 143));
-        btnSortCategoryDesc.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        btnSortCategoryDesc.setForeground(new java.awt.Color(248, 247, 244));
-        btnSortCategoryDesc.setText("Sort Category Desc");
-        btnSortCategoryDesc.addActionListener(new java.awt.event.ActionListener() {
+        btnSortNameDesc.setBackground(new java.awt.Color(133, 169, 143));
+        btnSortNameDesc.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnSortNameDesc.setForeground(new java.awt.Color(248, 247, 244));
+        btnSortNameDesc.setText("Sort Name by Desc");
+        btnSortNameDesc.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSortCategoryDescActionPerformed(evt);
+                btnSortNameDescActionPerformed(evt);
             }
         });
 
@@ -424,12 +432,30 @@ public class TheYarnestFrame extends javax.swing.JFrame {
             }
         });
 
-        jTextField1.setBackground(new java.awt.Color(248, 247, 244));
+        txtSearch.setBackground(new java.awt.Color(248, 247, 244));
 
-        jButton1.setBackground(new java.awt.Color(133, 169, 143));
-        jButton1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(248, 247, 244));
-        jButton1.setText("Search");
+        btnSearch.setBackground(new java.awt.Color(133, 169, 143));
+        btnSearch.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnSearch.setForeground(new java.awt.Color(248, 247, 244));
+        btnSearch.setText("Search");
+        btnSearch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSearchActionPerformed(evt);
+            }
+        });
+
+        btnSortStockDesc.setBackground(new java.awt.Color(133, 169, 143));
+        btnSortStockDesc.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnSortStockDesc.setForeground(new java.awt.Color(248, 247, 244));
+        btnSortStockDesc.setText("Sort Stock  by Desc");
+        btnSortStockDesc.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSortStockDescActionPerformed(evt);
+            }
+        });
+
+        lblSearchError.setForeground(new java.awt.Color(255, 153, 0));
+        lblSearchError.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
         javax.swing.GroupLayout pnlAllProductsLayout = new javax.swing.GroupLayout(pnlAllProducts);
         pnlAllProducts.setLayout(pnlAllProductsLayout);
@@ -438,45 +464,52 @@ public class TheYarnestFrame extends javax.swing.JFrame {
             .addGroup(pnlAllProductsLayout.createSequentialGroup()
                 .addGroup(pnlAllProductsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnlAllProductsLayout.createSequentialGroup()
+                        .addGap(37, 37, 37)
+                        .addGroup(pnlAllProductsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 823, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(pnlAllProductsLayout.createSequentialGroup()
+                                .addComponent(btnSortStock)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnSortStockDesc)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnSortName)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnSortNameDesc)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnSortMostPrice)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnSortLeastPrice))))
+                    .addGroup(pnlAllProductsLayout.createSequentialGroup()
                         .addGap(376, 376, 376)
                         .addComponent(lblOurProducts))
                     .addGroup(pnlAllProductsLayout.createSequentialGroup()
-                        .addGap(37, 37, 37)
-                        .addGroup(pnlAllProductsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 823, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(pnlAllProductsLayout.createSequentialGroup()
-                                .addComponent(btnSortId)
-                                .addGap(30, 30, 30)
-                                .addComponent(btnSortCategory)
-                                .addGap(18, 18, 18)
-                                .addComponent(btnSortCategoryDesc)
-                                .addGap(18, 18, 18)
-                                .addComponent(btnSortMostPrice)
-                                .addGap(30, 30, 30)
-                                .addComponent(btnSortLeastPrice))))
-                    .addGroup(pnlAllProductsLayout.createSequentialGroup()
                         .addGap(265, 265, 265)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 279, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(pnlAllProductsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(lblSearchError, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(txtSearch, javax.swing.GroupLayout.DEFAULT_SIZE, 279, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(40, Short.MAX_VALUE))
+                        .addComponent(btnSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(53, Short.MAX_VALUE))
         );
         pnlAllProductsLayout.setVerticalGroup(
             pnlAllProductsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlAllProductsLayout.createSequentialGroup()
                 .addGap(12, 12, 12)
                 .addComponent(lblOurProducts, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(28, 28, 28)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblSearchError)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnlAllProductsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1))
+                    .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnSearch))
                 .addGap(18, 18, 18)
                 .addGroup(pnlAllProductsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnSortId)
-                    .addComponent(btnSortCategory)
-                    .addComponent(btnSortCategoryDesc)
+                    .addComponent(btnSortStock)
+                    .addComponent(btnSortName)
+                    .addComponent(btnSortNameDesc)
                     .addComponent(btnSortMostPrice)
-                    .addComponent(btnSortLeastPrice))
+                    .addComponent(btnSortLeastPrice)
+                    .addComponent(btnSortStockDesc))
                 .addGap(26, 26, 26)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 366, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(35, 35, 35))
@@ -512,7 +545,7 @@ public class TheYarnestFrame extends javax.swing.JFrame {
         txtDescription.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Description", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 12), new java.awt.Color(153, 153, 153))); // NOI18N
         scrollPane.setViewportView(txtDescription);
 
-        pnlRegistrationForm.add(scrollPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 240, 260, -1));
+        pnlRegistrationForm.add(scrollPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 250, 260, -1));
 
         boxYarn.setBackground(new java.awt.Color(248, 247, 244));
         boxYarn.setEditable(true);
@@ -602,7 +635,7 @@ public class TheYarnestFrame extends javax.swing.JFrame {
             .addGroup(pnlAddProductsLayout.createSequentialGroup()
                 .addGap(31, 31, 31)
                 .addComponent(pnlRegistrationForm, javax.swing.GroupLayout.PREFERRED_SIZE, 833, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(36, Short.MAX_VALUE))
+                .addContainerGap(49, Short.MAX_VALUE))
         );
         pnlAddProductsLayout.setVerticalGroup(
             pnlAddProductsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -789,6 +822,7 @@ public class TheYarnestFrame extends javax.swing.JFrame {
     */
     private void addProduct(CrochetModel product) {
         productList.add(product);
+        
         DefaultTableModel model = (DefaultTableModel) tblProducts.getModel();
         model.addRow(new Object[]{
             product.getProdId(), product.getProdName(), product.getCategory(), 
@@ -834,7 +868,8 @@ public class TheYarnestFrame extends javax.swing.JFrame {
 
         // Check if Product Id is empty
         if (prodId.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Product Id is required.", "Validation Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Product Id is required.", "Validation Error", 
+                    JOptionPane.ERROR_MESSAGE);
             return;
         }
 
@@ -874,12 +909,14 @@ public class TheYarnestFrame extends javax.swing.JFrame {
         }
 
         if (found) {
-            JOptionPane.showMessageDialog(this, "Product Updated!", "Success", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Product Updated!", "Success", 
+                    JOptionPane.INFORMATION_MESSAGE);
             tblProducts.setVisible(true);
             tblProducts.repaint();
             tblProducts.revalidate();
         } else {
-            JOptionPane.showMessageDialog(this, "Product Id not found!", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Product Id not found!", "Error", 
+                    JOptionPane.ERROR_MESSAGE);
         }
 
     }//GEN-LAST:event_btnUpdateProductActionPerformed
@@ -895,6 +932,7 @@ public class TheYarnestFrame extends javax.swing.JFrame {
         String price = txtPrice.getText();
         int stock = (int) spinStock.getValue();
 
+        // Code to take real time date value
         SimpleDateFormat formatDate = new SimpleDateFormat("yyyy-MM-dd");
         String currentDate = formatDate.format(new Date());
 
@@ -981,12 +1019,15 @@ public class TheYarnestFrame extends javax.swing.JFrame {
 
         // Check if Product Id is empty
         if (prodId.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Product Id is required.", "Validation Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Product Id is required.", 
+                    "Validation Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
         // Confirm the delete process
-        int confirm = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete Product : " + prodId + "?", "Confirm Delete", JOptionPane.YES_NO_OPTION);
+        int confirm = JOptionPane.showConfirmDialog(this, 
+                "Are you sure you want to delete Product : " + prodId + "?", 
+                "Confirm Delete", JOptionPane.YES_NO_OPTION);
 
         // Do nothing if the user selects "No"
         if (confirm != JOptionPane.YES_OPTION) {
@@ -1009,9 +1050,11 @@ public class TheYarnestFrame extends javax.swing.JFrame {
             }
         }
         if (found) {
-            JOptionPane.showMessageDialog(this, "Product deleted!", "Success", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Product deleted!", 
+                    "Success", JOptionPane.INFORMATION_MESSAGE);
         } else {
-            JOptionPane.showMessageDialog(this, "Product ID not found.", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Product ID not found.", 
+                    "Error", JOptionPane.ERROR_MESSAGE);
         }
 
     }//GEN-LAST:event_btnDeleteProductActionPerformed
@@ -1033,17 +1076,17 @@ public class TheYarnestFrame extends javax.swing.JFrame {
             product.getPrice(), product.getStock(), product.getDateAdded()}));
     }
     
-    private void btnSortIdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSortIdActionPerformed
-        sortedList = selectionSort.sortById(productList, false);
+    private void btnSortStockActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSortStockActionPerformed
+        sortedList = selectionSort.sortByStock(productList, false);
         
         addToTable(sortedList);
-    }//GEN-LAST:event_btnSortIdActionPerformed
+    }//GEN-LAST:event_btnSortStockActionPerformed
 
-    private void btnSortCategoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSortCategoryActionPerformed
-        sortedList = insertionSort.sortByCategory(productList, false);
+    private void btnSortNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSortNameActionPerformed
+        sortedList = insertionSort.sortByName(productList, false);
         
         addToTable(sortedList);        
-    }//GEN-LAST:event_btnSortCategoryActionPerformed
+    }//GEN-LAST:event_btnSortNameActionPerformed
 
     private void btnSortMostPriceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSortMostPriceActionPerformed
         sortedList = mergeSort.sortByPrice(productList, true);
@@ -1051,17 +1094,63 @@ public class TheYarnestFrame extends javax.swing.JFrame {
         addToTable(sortedList);
     }//GEN-LAST:event_btnSortMostPriceActionPerformed
 
-    private void btnSortCategoryDescActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSortCategoryDescActionPerformed
-        sortedList = insertionSort.sortByCategory(productList, true);
+    private void btnSortNameDescActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSortNameDescActionPerformed
+        sortedList = insertionSort.sortByName(productList, true);
         
         addToTable(sortedList);
-    }//GEN-LAST:event_btnSortCategoryDescActionPerformed
+    }//GEN-LAST:event_btnSortNameDescActionPerformed
 
     private void btnSortLeastPriceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSortLeastPriceActionPerformed
         sortedList = mergeSort.sortByPrice(productList, false);
         
         addToTable(sortedList);
     }//GEN-LAST:event_btnSortLeastPriceActionPerformed
+
+    private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
+    // Check if the search field is empty
+    String searchKey = txtSearch.getText().trim();
+    if (searchKey.isEmpty()) {
+        lblSearchError.setText("Field is empty");
+        return;
+    }
+
+    // productList is not null or empty
+    if (productList == null || productList.isEmpty()) {
+        lblSearchError.setText("Product list is empty!");
+        return;
+    }
+
+    // Sort the list by product name in ascending order
+    sortedList = insertionSort.sortByName(productList, false);
+
+    // Performing binary search
+    CrochetModel searchedData = search.searchByName(searchKey, sortedList, 0, sortedList.size() - 1);
+
+    // Displaying the result in a dialog box along with the product details
+    if (searchedData != null) {
+        String message = String.format(
+            "The Product is found! \nProduct Id: %s\nProduct Name: %s\nCategory: %s\nYarn Type: %s\nRepairable: %s\nDescription: %s\nPrice: %.2f\nStock: %s\nDate Added: %s",
+            searchedData.getProdId(),
+            searchedData.getProdName(),
+            searchedData.getCategory(),
+            searchedData.getYarnType(),
+            searchedData.isRepairable(),
+            searchedData.getDescription(),
+            searchedData.getPrice(),
+            searchedData.getStock(),
+            searchedData.getDateAdded()
+        );
+        javax.swing.JOptionPane.showMessageDialog(this, message, "Search Result", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+    } else {
+        javax.swing.JOptionPane.showMessageDialog(this, "Product not found! Check for spelling.", "Search Result", javax.swing.JOptionPane.WARNING_MESSAGE);
+    }
+    }//GEN-LAST:event_btnSearchActionPerformed
+
+    private void btnSortStockDescActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSortStockDescActionPerformed
+        sortedList = selectionSort.sortByStock(productList, true);
+        
+        addToTable(sortedList);
+    }//GEN-LAST:event_btnSortStockDescActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1106,17 +1195,17 @@ public class TheYarnestFrame extends javax.swing.JFrame {
     private javax.swing.JButton btnDeleteProduct;
     private javax.swing.JButton btnLogin;
     private javax.swing.JButton btnLogout;
-    private javax.swing.JButton btnSortCategory;
-    private javax.swing.JButton btnSortCategoryDesc;
-    private javax.swing.JButton btnSortId;
+    private javax.swing.JButton btnSearch;
     private javax.swing.JButton btnSortLeastPrice;
     private javax.swing.JButton btnSortMostPrice;
+    private javax.swing.JButton btnSortName;
+    private javax.swing.JButton btnSortNameDesc;
+    private javax.swing.JButton btnSortStock;
+    private javax.swing.JButton btnSortStockDesc;
     private javax.swing.JButton btnUpdateProduct;
     private javax.swing.JCheckBox checkRepairable;
-    private javax.swing.JButton jButton1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JTextPane jTextPane1;
     private javax.swing.JLabel lblBrand;
     private javax.swing.JLabel lblCategoryError;
@@ -1135,6 +1224,7 @@ public class TheYarnestFrame extends javax.swing.JFrame {
     private javax.swing.JLabel lblPriceError;
     private javax.swing.JLabel lblProdError;
     private javax.swing.JLabel lblProductRegister;
+    private javax.swing.JLabel lblSearchError;
     private javax.swing.JLabel lblSignin;
     private javax.swing.JLabel lblStockError;
     private javax.swing.JLabel lblTagline;
@@ -1161,6 +1251,7 @@ public class TheYarnestFrame extends javax.swing.JFrame {
     private javax.swing.JPasswordField txtPassword;
     private javax.swing.JTextField txtPrice;
     private javax.swing.JTextField txtProduct;
+    private javax.swing.JTextField txtSearch;
     private javax.swing.JTextField txtUserName;
     // End of variables declaration//GEN-END:variables
 }

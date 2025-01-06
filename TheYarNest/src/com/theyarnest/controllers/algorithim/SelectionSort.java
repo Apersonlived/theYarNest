@@ -14,14 +14,14 @@ import java.util.List;
  * LMU ID: 23048589
  */
 public class SelectionSort {
-    List<CrochetModel> idSortList;
+    List<CrochetModel> stockSortList;
 
     
     public SelectionSort(){
-        idSortList = new LinkedList<>();
+        stockSortList = new LinkedList<>();
     }
     /**
-     * Sorts a list of CrochetModel objects by their ID in ascending or
+     * Sorts a list of CrochetModel objects by their stock in ascending or
      * descending order.
      *
      * @param productList the list of CrochetModel objects to be sorted
@@ -29,38 +29,40 @@ public class SelectionSort {
      * ascending)
      * @return the sorted list
      */
-    public List<CrochetModel> sortById(List<CrochetModel> productList, boolean isDesc) {
-        this.idSortList.clear();
-        this.idSortList.addAll(productList);
-        if (idSortList == null || idSortList.isEmpty()) {
+    public List<CrochetModel> sortByStock(List<CrochetModel> productList, boolean isDesc) {
+        this.stockSortList.clear();
+        this.stockSortList.addAll(productList);
+        if (stockSortList == null || stockSortList.isEmpty()) {
             throw new IllegalArgumentException("Product list cannot be null or empty.");
         }
 
-        for (int i = 0; i < idSortList.size() - 1; i++) {
-            int extremumIndex = findExtremumIndex(idSortList, i, isDesc);
+        for (int i = 0; i < stockSortList.size() - 1; i++) {
+            int extremumIndex = findExtremumIndex(stockSortList, i, isDesc);
             if (i != extremumIndex) {
-                swap(idSortList, i, extremumIndex);
+                swap(stockSortList, i, extremumIndex);
             }
         }
 
-        return idSortList;
+        return stockSortList;
     }
 
     /**
      * Finds the index of the extremum value (minimum or maximum) in the list
      * from the start index.
      *
-     * @param idSortList the list of CrochetModel objects
+     * @param stockSortList the list of CrochetModel objects
      * @param startIndex the index to start searching from
      * @param isDesc specifies whether to find the maximum (true) or minimum
      * (false)
      * @return the index of the extremum value
      */
-    private int findExtremumIndex(List<CrochetModel> idSortList, int startIndex, boolean isDesc) {
+    private int findExtremumIndex(List<CrochetModel> stockSortList, int startIndex, 
+            boolean isDesc) {
         int extremumIndex = startIndex;
 
-        for (int j = startIndex + 1; j < idSortList.size(); j++) {
-            if (shouldSwap(idSortList.get(j).getProdId(), idSortList.get(extremumIndex).getProdId(), isDesc)) {
+        for (int j = startIndex + 1; j < stockSortList.size(); j++) {
+            if (shouldSwap(stockSortList.get(j).getStock(), 
+                    stockSortList.get(extremumIndex).getStock(), isDesc)) {
                 extremumIndex = j;
             }
         }
@@ -86,14 +88,14 @@ public class SelectionSort {
     /**
      * Swaps two elements in the list.
      *
-     * @param idSortList the list of CrochetModel objects
+     * @param stockSortList the list of CrochetModel objects
      * @param i the index of the first element
      * @param j the index of the second element
      */
-    private void swap(List<CrochetModel> idSortList, int i, int j) {
-        CrochetModel temp = idSortList.get(i);
-        idSortList.set(i, idSortList.get(j));
-        idSortList.set(j, temp);
+    private void swap(List<CrochetModel> stockSortList, int i, int j) {
+        CrochetModel temp = stockSortList.get(i);
+        stockSortList.set(i, stockSortList.get(j));
+        stockSortList.set(j, temp);
     }
 
 }
