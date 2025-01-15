@@ -53,7 +53,6 @@ public class MergeSort {
 
             mergeSort(left, mid, isDesc);
             mergeSort(mid + 1, right, isDesc);
-
             merge(left, mid, right, isDesc);
         }
     }
@@ -72,7 +71,8 @@ public class MergeSort {
         int i = left, j = mid + 1;
 
         while (i <= mid && j <= right) {
-            if (shouldSwap(priceSortList.get(j).getPrice(), priceSortList.get(i).getPrice(), isDesc)) {
+            if (shouldSwap(priceSortList.get(j).getPrice(), 
+                    priceSortList.get(i).getPrice(), isDesc)) {
                 tempList.add(priceSortList.get(j));
                 j++;
             } else {
@@ -110,5 +110,4 @@ public class MergeSort {
     private boolean shouldSwap(double current, double extremum, boolean isDesc) {
         return isDesc ? current > extremum : current < extremum;
     }
-
 }

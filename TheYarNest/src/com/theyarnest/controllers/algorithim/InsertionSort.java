@@ -14,35 +14,34 @@ import java.util.List;
  * LMU ID: 23048589
  */
 public class InsertionSort {
-    List<CrochetModel> categorySortList;
+    List<CrochetModel> nameSortList;
     
     public InsertionSort(){
-        categorySortList = new LinkedList<>();
+        nameSortList = new LinkedList<>();
     }
     
-    public List<CrochetModel> sortByCategory(List<CrochetModel> productList, boolean isDesc) {
-        this.categorySortList.clear();
-        this.categorySortList.addAll(productList);
+    public List<CrochetModel> sortByName(List<CrochetModel> productList, boolean isDesc) {
+        this.nameSortList.clear();
+        this.nameSortList.addAll(productList);
 
-        if (categorySortList == null || categorySortList.isEmpty()) {
+        if (nameSortList == null || nameSortList.isEmpty()) {
             throw new IllegalArgumentException("Product list cannot be null or empty.");
         }
 
-        for (int i = 1; i < categorySortList.size(); i++) {
-            CrochetModel key = categorySortList.get(i);
+        for (int i = 1; i < nameSortList.size(); i++) {
+            CrochetModel key = nameSortList.get(i);
             int j = i - 1;
 
             // Move elements that are greater (or smaller)
             // than the key to one position ahead of their current position
-            while (j >= 0 && shouldSwap(key.getCategory(), categorySortList.get(j).getCategory(), isDesc)) {
-                categorySortList.set(j + 1, categorySortList.get(j));
+            while (j >= 0 && shouldSwap(key.getProdName(), nameSortList.get(j).getProdName(), isDesc)) {
+                nameSortList.set(j + 1, nameSortList.get(j));
                 j--;
             }
-
-            categorySortList.set(j + 1, key);
+            nameSortList.set(j + 1, key);
         }
 
-        return categorySortList;
+        return nameSortList;
     }
 
     /**
@@ -58,6 +57,5 @@ public class InsertionSort {
      */
     private boolean shouldSwap(String current, String extremum, boolean isDesc) {
         return isDesc ? current.compareTo(extremum) > 0 : current.compareTo(extremum) < 0;
-    }
-    
+    }   
 }
