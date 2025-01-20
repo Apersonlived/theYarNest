@@ -46,6 +46,5 @@ public class ValidationUtil {
     
     public static boolean isValidPrice(String price){
         return PRICE_PATTERN.matcher(price).matches();
-    }
-    
+    }    
 }

@@ -65,7 +65,6 @@ public class TheYarnestFrame extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         lblSignin = new javax.swing.JLabel();
         lblMessage = new javax.swing.JLabel();
-        lblForgetPassword = new javax.swing.JLabel();
         txtUserName = new javax.swing.JTextField();
         txtPassword = new javax.swing.JPasswordField();
         btnLogin = new javax.swing.JButton();
@@ -144,10 +143,6 @@ public class TheYarnestFrame extends javax.swing.JFrame {
         lblMessage.setForeground(new java.awt.Color(82, 91, 68));
         lblMessage.setText("Please enter user-name and password!");
 
-        lblForgetPassword.setFont(new java.awt.Font("Segoe UI Historic", 1, 14)); // NOI18N
-        lblForgetPassword.setForeground(new java.awt.Color(82, 91, 68));
-        lblForgetPassword.setText("Forget Password?");
-
         txtUserName.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "User-Name", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 12), new java.awt.Color(82, 91, 68))); // NOI18N
 
         txtPassword.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Password", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 12), new java.awt.Color(82, 91, 68))); // NOI18N
@@ -180,9 +175,6 @@ public class TheYarnestFrame extends javax.swing.JFrame {
                             .addComponent(txtUserName, javax.swing.GroupLayout.PREFERRED_SIZE, 277, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(76, 76, 76))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(lblForgetPassword)
-                        .addGap(163, 163, 163))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addComponent(btnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(151, 151, 151))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
@@ -205,8 +197,6 @@ public class TheYarnestFrame extends javax.swing.JFrame {
                 .addGap(60, 60, 60)
                 .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(lblForgetPassword)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(114, 114, 114))
         );
@@ -861,7 +851,16 @@ public class TheYarnestFrame extends javax.swing.JFrame {
     private void btnLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogoutActionPerformed
         txtPassword.setText("");
         txtUserName.setText("");
-        loadScreen("LoginScreen"); // Load the main screen
+        
+        // Confirm the log-out
+        int confirml= JOptionPane.showConfirmDialog(this,
+                "Are you sure you want to log-out?",
+                "Confirm log-out", JOptionPane.YES_NO_OPTION);
+
+        // Do nothing if the user selects "No"
+        if (confirml!= JOptionPane.NO_OPTION) {
+            loadScreen("LoginScreen"); // Load the main screen;
+        }
     }//GEN-LAST:event_btnLogoutActionPerformed
 
     private void btnUpdateProductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateProductActionPerformed
@@ -883,8 +882,6 @@ public class TheYarnestFrame extends javax.swing.JFrame {
                 // Update the stock, price
                 String newPrice = txtPrice.getText();
                 int newStock = (int) spinStock.getValue();
-                
-                
                 if (!ValidationUtil.isValidPrice(newPrice)) {
                     lblPriceError.setText("Enter positive decimals and digits only.");
                     return;
@@ -907,12 +904,11 @@ public class TheYarnestFrame extends javax.swing.JFrame {
                 break;
             }
         }
-
         if (found) {
             addToTable(productList);
             JOptionPane.showMessageDialog(this, "Product Updated!", "Success",
                     JOptionPane.INFORMATION_MESSAGE);
-
+            clearFields();
         } else {
             JOptionPane.showMessageDialog(this, "Product Id not found!", "Error",
                     JOptionPane.ERROR_MESSAGE);
@@ -960,7 +956,7 @@ public class TheYarnestFrame extends javax.swing.JFrame {
         if (ValidationUtil.isNullOrEmpty(productName)) {
             lblProdError.setText("Field is Empty");
             return;
-        } else if (ValidationUtil.isValidProdName(productName)) {
+        } else if (!ValidationUtil.isValidProdName(productName)) {
             lblProdError.setText("Enter letters and spaces.");
             return;
         } else {
@@ -1010,6 +1006,7 @@ public class TheYarnestFrame extends javax.swing.JFrame {
         addToTable(productList);
 
         JOptionPane.showMessageDialog(this, "Product Registered!", "Success", JOptionPane.INFORMATION_MESSAGE);
+        clearFields();
     }//GEN-LAST:event_btnAddProductActionPerformed
 
     private void btnDeleteProductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteProductActionPerformed
@@ -1051,12 +1048,19 @@ public class TheYarnestFrame extends javax.swing.JFrame {
             addToTable(productList);
             JOptionPane.showMessageDialog(this, "Product deleted!",
                     "Success", JOptionPane.INFORMATION_MESSAGE);
+            clearFields();
         } else {
             JOptionPane.showMessageDialog(this, "Product ID not found.",
                     "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnDeleteProductActionPerformed
 
+    private void clearFields(){
+        txtId.setText("");
+        txtProduct.setText("");
+        txtDescription.setText("");
+        txtPrice.setText("");
+    }
     /* Method to manipulate products data in the table for sorting
     * @params productList list of products 
     * populates the table with the product data through table model
@@ -1214,7 +1218,6 @@ public class TheYarnestFrame extends javax.swing.JFrame {
     private javax.swing.JLabel lblCopyright;
     private javax.swing.JLabel lblCozyGreenSweater;
     private javax.swing.JLabel lblError;
-    private javax.swing.JLabel lblForgetPassword;
     private javax.swing.JLabel lblGrannySquareCardigan;
     private javax.swing.JLabel lblHalfSweater;
     private javax.swing.JLabel lblIdError;
